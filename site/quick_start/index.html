@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="flywire" /><link rel="canonical" href="https://flywire.github.io/flyfield_docs/quick_start/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Quick Start Guide - flyfield Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Quick Start Guide";
+        var mkdocs_page_input_path = "quick_start.md";
+        var mkdocs_page_url = "/flyfield_docs/quick_start/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> flyfield Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Quick Start Guide</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#basic-workflow">Basic Workflow</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-copy-the-source-pdf-recommended">1. Copy the Source PDF (Recommended)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-generate-interactive-pdf-form-fields">2. Generate Interactive PDF Form Fields</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-create-markup-pdf-for-verification">3. Create Markup PDF for Verification</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-fill-form-fields-using-csv-data">4. Fill Form Fields Using CSV Data</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-capture-data-from-filled-form-to-csv">5. Capture Data From Filled Form to CSV</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#additional-tips">Additional Tips</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#need-more-help">Need More Help?</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../example/">Worked Example</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../process/">Process Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../faq/">FAQ</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API Documentation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../developer/">Developer Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../glossary/">Glossary</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">flyfield Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Quick Start Guide</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/flywire/flyfield/edit/main/docs/quick_start.md">Edit on flyfield_docs</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="quick-start-guide-for-flyfield">Quick Start Guide for flyfield</h1>
+<p>This quick start guide provides essential commands and workflow steps to begin using <strong>flyfield</strong> for PDF form automation.</p>
+<hr />
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Python 3.8 or above installed</li>
+<li>flyfield package installed (recommended via pipx):</li>
+</ul>
+<pre><code>
+pipx install flyfield
+
+</code></pre>
+<p>After installation, verify your installed version by running:</p>
+<pre><code>
+flyfield --version
+
+</code></pre>
+<hr />
+<h2 id="basic-workflow">Basic Workflow</h2>
+<p>The key steps you'll typically perform using a copied PDF working file:</p>
+<h3 id="1-copy-the-source-pdf-recommended">1. Copy the Source PDF (Recommended)</h3>
+<p>Begin by copying your original PDF to avoid overwriting:</p>
+<pre><code>
+copy your-form.pdf working-form.pdf
+
+</code></pre>
+<p>Outputs:
+- <code>working-form.pdf</code> — copied working PDF file.</p>
+<p>This protects the integrity of the original form and organizes output files by using the working copy.</p>
+<hr />
+<h3 id="2-generate-interactive-pdf-form-fields">2. Generate Interactive PDF Form Fields</h3>
+<p>Extraction of white box fields runs automatically unless an input CSV is provided.</p>
+<pre><code>
+flyfield --input-pdf working-form.pdf --fields
+
+</code></pre>
+<p>Outputs:
+- <code>working-form-fields.pdf</code> — form with interactive fields.
+- <code>working-form-field-generator.py</code> — script used for generation.
+- <code>working-form.csv</code> — detected field codes and positions.</p>
+<p><em>Tip:</em> The generated script can be customized if needed before running.</p>
+<hr />
+<h3 id="3-create-markup-pdf-for-verification">3. Create Markup PDF for Verification</h3>
+<p>This step is optional but recommended to visually verify detected fields. The <code>--pdf-pages</code> option limits processing to specific pages:</p>
+<pre><code>
+flyfield --input-pdf working-form.pdf --pdf-pages &quot;1,3-4&quot; --markup
+
+</code></pre>
+<p>Outputs:
+- <code>working-form-markup.pdf</code> — PDF annotated with detected fields and codes.</p>
+<p>Use this to confirm field detection accuracy and troubleshoot issues early.</p>
+<hr />
+<h3 id="4-fill-form-fields-using-csv-data">4. Fill Form Fields Using CSV Data</h3>
+<p>Fill form fields with CSV data which must have <code>code</code> and <code>fill</code> columns:</p>
+<pre><code>
+flyfield --input-pdf working-form-fields.pdf --input-csv data.csv --fill
+
+</code></pre>
+<p>Outputs:
+- <code>working-form-fields-filled.pdf</code> — filled PDF form.
+- <code>working-form-fields-filler.py</code> — script used for filling.</p>
+<hr />
+<h3 id="5-capture-data-from-filled-form-to-csv">5. Capture Data From Filled Form to CSV</h3>
+<p>Extract values entered or filled in the PDF form back to CSV for editing or reuse:</p>
+<pre><code>
+flyfield --input-pdf working-form-fields-filled.pdf --capture
+
+</code></pre>
+<p>Outputs:
+- <code>working-form-fields-filled-capture.csv</code> — CSV containing filled form data.</p>
+<hr />
+<h2 id="additional-tips">Additional Tips</h2>
+<ul>
+<li>Always work with a copied working PDF file to safeguard originals.</li>
+<li>Avoid re-running <code>--fields</code> repeatedly on large PDFs; reuse generated CSV and markup outputs.</li>
+<li>Use the <code>--debug</code> flag for detailed logs during troubleshooting.</li>
+<li>Customize the generated Python scripts as needed for advanced workflows.</li>
+<li>Keep backups of your PDFs and CSV files to prevent accidental overwrite.</li>
+<li>Only vector PDFs with white boxes are supported; scanned PDFs are not compatible.</li>
+</ul>
+<hr />
+<h2 id="need-more-help">Need More Help?</h2>
+<p>Start with the <a href="../example/">Worked Example</a> for a practical guided workflow.<br />
+See the full <a href="../usage/">User Guide</a> for detailed commands and options.</p>
+<hr />
+<p>This quick start gives you the foundation to efficiently automate your white box PDF forms using flyfield.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../introduction/" class="btn btn-neutral float-left" title="Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../installation/" class="btn btn-neutral float-right" title="Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/flywire/flyfield" class="fa fa-code-fork" style="color: #fcfcfc"> flyfield_docs</a>
+        </span>
+    
+    
+      <span><a href="../introduction/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../installation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

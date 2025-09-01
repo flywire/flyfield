@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="flywire" /><link rel="canonical" href="https://flywire.github.io/flyfield_docs/installation/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Installation - flyfield Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Installation";
+        var mkdocs_page_input_path = "installation.md";
+        var mkdocs_page_url = "/flyfield_docs/installation/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> flyfield Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Installation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installation-methods">Installation Methods</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-recommended-install-via-pipx">1. Recommended: Install via pipx</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-alternative-install-via-pip-in-a-virtual-environment">2. Alternative: Install via pip in a Virtual Environment</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#development-installation-for-contributors">Development Installation (for contributors)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../example/">Worked Example</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../process/">Process Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../faq/">FAQ</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API Documentation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../developer/">Developer Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../glossary/">Glossary</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">flyfield Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/flywire/flyfield/edit/main/docs/installation.md">Edit on flyfield_docs</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="installation-guide-for-flyfield">Installation Guide for flyfield</h1>
+<p>This guide explains how to install <strong>flyfield</strong> and get it ready for use on your system.</p>
+<hr />
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Python version 3.8 or higher  </li>
+<li>Access to a command-line terminal (Command Prompt, PowerShell, Terminal, etc.)</li>
+</ul>
+<hr />
+<h2 id="installation-methods">Installation Methods</h2>
+<h3 id="1-recommended-install-via-pipx">1. Recommended: Install via <code>pipx</code></h3>
+<p><a href="https://pypa.github.io/pipx/"><code>pipx</code></a> allows installing Python applications in isolated environments, avoiding conflicts.</p>
+<p>To install flyfield using pipx, run:</p>
+<pre><code>
+pipx install flyfield
+
+</code></pre>
+<p>After installation, the <code>flyfield</code> command will be available globally.</p>
+<hr />
+<h3 id="2-alternative-install-via-pip-in-a-virtual-environment">2. Alternative: Install via <code>pip</code> in a Virtual Environment</h3>
+<ol>
+<li>
+<p>Create and activate a virtual environment (optional but recommended):</p>
+</li>
+<li>
+<p>On macOS/Linux:
+     <code>python3 -m venv env
+     source env/bin/activate</code></p>
+</li>
+<li>
+<p>On Windows:
+     <code>python -m venv env
+     .\env\Scripts\activate</code></p>
+</li>
+<li>
+<p>Install flyfield with pip:</p>
+</li>
+</ol>
+<pre><code>
+pip install flyfield
+
+</code></pre>
+<ol>
+<li>
+<p>Verify installation:</p>
+</li>
+<li>
+<p>To verify the installed version of flyfield:</p>
+</li>
+</ol>
+<pre><code>flyfield --version
+</code></pre>
+<hr />
+<h2 id="development-installation-for-contributors">Development Installation (for contributors)</h2>
+<p>If you want to develop or contribute to the project:</p>
+<ol>
+<li>Clone the repository:</li>
+</ol>
+<pre><code>
+git clone https://github.com/flywire/flyfield_docs.git
+cd flyfield_docs
+
+</code></pre>
+<ol>
+<li>Install with development dependencies:</li>
+</ol>
+<pre><code>
+pip install -e .[dev]
+
+</code></pre>
+<ol>
+<li>Run tests with pytest:</li>
+</ol>
+<pre><code>
+pytest
+
+</code></pre>
+<hr />
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li>If the <code>flyfield</code> command is not found after using <code>pipx</code>, run:</li>
+</ul>
+<pre><code>
+pipx ensurepath
+
+</code></pre>
+<p>Then restart your terminal.</p>
+<ul>
+<li>If you encounter permission errors during installation, try adding <code>--user</code> to your pip install command:</li>
+</ul>
+<pre><code>
+pip install --user flyfield
+
+</code></pre>
+<ul>
+<li>Always keep your pip updated:</li>
+</ul>
+<pre><code>
+pip install --upgrade pip
+
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../quick_start/" class="btn btn-neutral float-left" title="Quick Start Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../usage/" class="btn btn-neutral float-right" title="User Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/flywire/flyfield" class="fa fa-code-fork" style="color: #fcfcfc"> flyfield_docs</a>
+        </span>
+    
+    
+      <span><a href="../quick_start/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../usage/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

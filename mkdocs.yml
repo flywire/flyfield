@@ -1,0 +1,32 @@
+site_name: flyfield Documentation
+site_url: https://flywire.github.io/flyfield_docs/
+site_description: Tools for extracting, processing, and generating interactive fields for PDFs containing white box fields
+site_author: flywire
+repo_name: flyfield_docs
+repo_url: https://github.com/flywire/flyfield
+edit_uri: edit/main/docs/
+use_directory_urls: true
+
+nav:
+  - Home:               index.md
+  - Introduction:       introduction.md
+  - Quick Start Guide:  quick_start.md
+  - Installation:       installation.md
+  - User Guide:         usage.md
+  - Worked Example:     example.md
+  - Process Overview:   process.md
+  - FAQ:                faq.md
+  - API Documentation:  api.md
+  - Configuration:      config.md
+  - Developer Guide:    developer.md
+  - Glossary:           glossary.md
+
+theme:
+  name: readthedocs
+  color_mode: auto
+  user_color_mode_toggle: auto
+  features:
+    - navigation.footer
+
+markdown_extensions:
+  - admonition

@@ -1,0 +1,56 @@
+name: Release on Exact Commit Message 'release'
+
+on:
+  push:
+    branches:
+      - main  # adjust branch as needed
+  workflow_dispatch:
+
+permissions:
+  contents: write  # needed for pushing tags and commits
+  packages: write
+  id-token: write
+
+jobs:
+  release:
+    if: github.event.head_commit.message == 'Release'  # Case specific
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # needed to push tags and commits
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Determine version as date-based string
+        id: version
+        run: |
+          VERSION=$(date +'%Y.%m.%d')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update version in pyproject.toml
+        run: |
+          sed -i "s/^version = .*/version = \"${{ steps.version.outputs.version }}\"/" pyproject.toml
+
+      - name: Commit updated version and create tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pyproject.toml
+          git commit -m "ci: bump version to ${{ steps.version.outputs.version }}"
+          git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
+          git push origin HEAD:main --tags
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: Release v${{ steps.version.outputs.version }}
+          body: |
+            Automated release triggered by commit with message 'Release'.

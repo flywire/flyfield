@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="flywire" /><link rel="canonical" href="https://flywire.github.io/flyfield_docs/example/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Worked Example - flyfield Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Worked Example";
+        var mkdocs_page_input_path = "example.md";
+        var mkdocs_page_url = "/flyfield_docs/example/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> flyfield Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">User Guide</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Worked Example</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#workflow-overview">Workflow Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-1-copy-the-source-pdf">Step 1: Copy the Source PDF</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-2-generate-interactive-pdf-form-fields">Step 2: Generate Interactive PDF Form Fields</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-3-create-markup-pdf-for-verification">Step 3: Create Markup PDF for Verification</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-4-fill-form-fields-with-csv-data">Step 4: Fill Form Fields With CSV Data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-5-capture-data-from-filled-form">Step 5: Capture Data From Filled Form</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#notes-and-tips">Notes and Tips</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../process/">Process Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../faq/">FAQ</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API Documentation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../developer/">Developer Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../glossary/">Glossary</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">flyfield Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Worked Example</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/flywire/flyfield/edit/main/docs/example.md">Edit on flyfield_docs</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="worked-example-automating-a-tax-return-pdf-form">Worked Example: Automating a Tax Return PDF Form</h1>
+<p>This detailed step-by-step example demonstrates how to use <strong>flyfield</strong> for extracting, marking up, generating form fields, filling, and capturing data from a real complex form: the Australian Tax Office Trust Tax Return 2024. It starts with copying the original PDF to a new working filename to safeguard the source and uses this filename as the base for every output file in the workflow.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>flyfield</strong> installed and operational.</li>
+<li>Source PDF: <code>Trust-tax-return-2024.pdf</code>.</li>
+<li>CSV file containing field codes and associated data: <code>example-fields-filled-capture.csv</code>.</li>
+</ul>
+<h2 id="workflow-overview">Workflow Overview</h2>
+<p>Once the original PDF is copied, all subsequent steps work exclusively on the new working file. Each time flyfield is run without the <code>--input-csv FILE</code> option, it automatically extracts white box fields and generates the CSV, so a dedicated extraction step is not needed.</p>
+<p>The five core automation steps are:</p>
+<ol>
+<li>Copy the original PDF to a working filename</li>
+<li>Generate interactive form fields</li>
+<li>Create a marked-up PDF to verify field positions</li>
+<li>Fill form fields using CSV data</li>
+<li>Capture filled form data back into a CSV for editing or reuse</li>
+</ol>
+<h2 id="step-1-copy-the-source-pdf">Step 1: Copy the Source PDF</h2>
+<p>Begin by copying the original tax return PDF:</p>
+<pre><code class="language-sh">copy Trust-tax-return-2024.pdf example.pdf
+</code></pre>
+<p>Outputs:</p>
+<ul>
+<li><code>example.pdf</code> — copied working PDF file.</li>
+</ul>
+<p>This protects the integrity of the original form by avoiding accidental overwrites or corruption. It also keeps all outputs organized and traceable by using the base filename <code>example.pdf</code>.</p>
+<h2 id="step-2-generate-interactive-pdf-form-fields">Step 2: Generate Interactive PDF Form Fields</h2>
+<pre><code class="language-sh">flyfield --input-pdf example.pdf --fields
+</code></pre>
+<p>Outputs:</p>
+<ul>
+<li><code>example-fields.pdf</code> — form with interactive fields.</li>
+<li><code>example-field-generator.py</code> — script used to generate fields.</li>
+<li><code>example.csv</code> — updated field codes and positions.</li>
+</ul>
+<h2 id="step-3-create-markup-pdf-for-verification">Step 3: Create Markup PDF for Verification</h2>
+<pre><code class="language-sh">flyfield --input-pdf example.pdf --markup
+</code></pre>
+<p>Outputs:</p>
+<ul>
+<li><code>example-markup.pdf</code> — visualizes all detected fields and codes for easy validation against the original.</li>
+<li><code>example.csv</code> — updated field codes and positions.</li>
+</ul>
+<h2 id="step-4-fill-form-fields-with-csv-data">Step 4: Fill Form Fields With CSV Data</h2>
+<pre><code class="language-sh">flyfield --input-pdf example-fields.pdf --input-csv example-fields-filled-capture.csv --fill
+</code></pre>
+<p>Outputs:</p>
+<ul>
+<li><code>example-fields-filled.pdf</code> — form with CSV data filled in.</li>
+<li><code>example-fields-filler.py</code> — script used for filling.</li>
+</ul>
+<h2 id="step-5-capture-data-from-filled-form">Step 5: Capture Data From Filled Form</h2>
+<pre><code class="language-sh">flyfield --input-pdf example-fields-filled.pdf --capture
+</code></pre>
+<p>Outputs:</p>
+<ul>
+<li><code>example-fields-filled-capture.csv</code> — exported filled values for editing or reuse.</li>
+</ul>
+<h2 id="notes-and-tips">Notes and Tips</h2>
+<ul>
+<li>Starting with a copy safeguards the original form and simplifies file management.</li>
+<li>Running flyfield generally triggers automatic extraction unless a CSV input file is provided.</li>
+<li>Minimize repeated use of <code>--fields</code> on large PDFs because field generation can be slow.</li>
+<li>Ensure CSV fields align perfectly before filling.</li>
+<li>Use the markup step regularly to confirm all field detection and spot issues early.</li>
+<li>The generated Python scripts enable advanced users to customize field generation and data filling.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../usage/" class="btn btn-neutral float-left" title="User Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../process/" class="btn btn-neutral float-right" title="Process Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/flywire/flyfield" class="fa fa-code-fork" style="color: #fcfcfc"> flyfield_docs</a>
+        </span>
+    
+    
+      <span><a href="../usage/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../process/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
