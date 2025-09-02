@@ -52,12 +52,16 @@ jobs:
 
       - name: Update version in pyproject.toml
         run: |
-          sed -i "s/^version = .*/version = \"${{ steps.vars.outputs.tag#v }}\"/" pyproject.toml
+          VERSION="${{ steps.vars.outputs.tag }}"
+          VERSION="${VERSION#v}"
+          sed -i "s/^version = .*/version = \"$VERSION\"/" pyproject.toml
 
       - name: Commit version bump
         run: |
+          VERSION="${{ steps.vars.outputs.tag }}"
+          VERSION="${VERSION#v}"
           git add pyproject.toml
-          git commit -m "ci: set version to ${{ steps.vars.outputs.tag#v }}" || echo "No changes to commit"
+          git commit -m "ci: set version to $VERSION" || echo "No changes to commit"
           git push origin HEAD:main || true
 
       - name: Build package
