@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flyfield"
+version = "2025.09.02"
+description = "Tools for extracting, processing, and generating interactive fields for PDFs containing white box fields."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+  {name = "flywire", email = "flywire0@gmail.com"}
+]
+keywords = ["pdf", "form", "fields", "extraction", "pymupdf", "pypdfforms"]
+license = {text = "GPL-3.0-or-later"}
+dependencies = [
+  "PyMuPDF>=1.18.0",
+  "PyPDFForm>=0.3.3",
+]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Software Development :: Libraries",
+]
+
+[project.scripts]
+flyfield = "flyfield.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
