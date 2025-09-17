@@ -1,0 +1,53 @@
+site_name: flyfield Documentation
+site_description: Tools to automate PDFs containing white box field placeholders
+site_author: flywire
+repo_name: flyfield
+site_url: https://flywire.github.io/flyfield
+repo_url: https://github.com/flywire/flyfield
+edit_uri: edit/main/docs/
+use_directory_urls: false
+
+nav:
+  - Home:               index.md
+  - Introduction:       introduction.md
+  - Quick Start Guide:  quick_start.md
+  - Installation:       installation.md
+  - User Guide:         usage.md
+  - Worked Example:     example.md
+  - Process Overview:   process.md
+  - FAQ:                faq.md
+  - API Documentation:  api.md
+  - Configuration:      config.md
+  - Developer Guide:    developer.md
+  - Glossary:           glossary.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_signature: true
+            members_order: source
+            inherited_members: true
+
+theme:
+  name: material
+  color_mode: auto
+  user_color_mode_toggle: auto
+  features:
+    - navigation.footer
+    - content.action.edit
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format

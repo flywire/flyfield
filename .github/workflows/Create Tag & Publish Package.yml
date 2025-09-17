@@ -1,0 +1,74 @@
+name: Create Tag & Publish Package
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  tag_and_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Full history to check tags
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Determine today's tag
+        id: vars
+        run: |
+          TAG="v$(date +'%Y.%m.%d')"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git rev-parse "${{ steps.vars.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Fail if tag exists (skip release)
+        if: ${{ steps.check_tag.outputs.exists == 'true' }}
+        run: |
+          echo "Tag ${{ steps.vars.outputs.tag }} already exists; skipping tag creation and release."
+          exit 1
+
+      - name: Create date-based tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.vars.outputs.tag }}" -m "Tag created by GitHub Actions on $(date)"
+          git push origin "${{ steps.vars.outputs.tag }}"
+
+      - name: Update version in pyproject.toml
+        run: |
+          VERSION="${{ steps.vars.outputs.tag }}"
+          VERSION="${VERSION#v}"
+          sed -i "s/^version = .*/version = \"$VERSION\"/" pyproject.toml
+
+      - name: Commit version bump
+        run: |
+          VERSION="${{ steps.vars.outputs.tag }}"
+          VERSION="${VERSION#v}"
+          git add pyproject.toml
+          git commit -m "ci: set version to $VERSION" || echo "No changes to commit"
+          git push origin HEAD:main || true
+
+      - name: Build package
+        run: |
+          pip install build
+          rm -rf dist/*
+          python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
