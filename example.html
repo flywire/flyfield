@@ -1,0 +1,958 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools to automate PDFs containing white box field placeholders">
+      
+      
+        <meta name="author" content="flywire">
+      
+      
+        <link rel="canonical" href="https://flywire.github.io/flyfield/example.html">
+      
+      
+        <link rel="prev" href="usage.html">
+      
+      
+        <link rel="next" href="process.html">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Worked Example - flyfield Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.e53b48f4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#worked-example-automating-a-tax-return-pdf-form" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="flyfield Documentation" class="md-header__button md-logo" aria-label="flyfield Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            flyfield Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Worked Example
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/flywire/flyfield" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    flyfield
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="flyfield Documentation" class="md-nav__button md-logo" aria-label="flyfield Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    flyfield Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/flywire/flyfield" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    flyfield
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quick_start.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="usage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Worked Example
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="example.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Worked Example
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-copy-the-source-pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Copy the Source PDF
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-create-markup-pdf-for-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Create Markup PDF for Verification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-generate-interactive-pdf-form-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Generate Interactive PDF Form Fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-fill-form-fields-with-csv-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Fill Form Fields With CSV Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-capture-data-from-filled-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Capture Data From Filled Form
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="process.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Process Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="developer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="glossary.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-copy-the-source-pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Copy the Source PDF
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-create-markup-pdf-for-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Create Markup PDF for Verification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-generate-interactive-pdf-form-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Generate Interactive PDF Form Fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-fill-form-fields-with-csv-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Fill Form Fields With CSV Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-capture-data-from-filled-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Capture Data From Filled Form
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/flywire/flyfield/edit/main/docs/example.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="worked-example-automating-a-tax-return-pdf-form">Worked Example: Automating a Tax Return PDF Form</h1>
+<p>This detailed step-by-step example demonstrates how to use <strong>flyfield</strong> for extracting, marking up, generating form fields, filling, and capturing data from a real complex form. It starts with copying the original PDF to a new working filename to safeguard the source and uses this filename as the base for every output file in the workflow.</p>
+<hr />
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before following this example, you should be familiar with the <strong><a href="quick_start.html">Quick Start Guide</a></strong>.</p>
+<ul>
+<li><strong>flyfield</strong> installed and operational</li>
+<li>Source PDF: <a href="assets/Trust-tax-return-2024.pdf">Trust-tax-return-2024.pdf</a></li>
+<li>CSV file containing field codes and associated data: <a href="assets/example-fields-filled-capture.csv">example-fields-filled-capture.csv</a></li>
+</ul>
+<details class="example">
+<summary>Take a look at the CSV contents:</summary>
+<div class="highlight"><pre><span></span><code>code,fill
+1-3-1,123
+1-3-2,456
+1-3-3,789
+1-4-1,GREENFIELD FAMILY TRUST
+1-6-1,12
+1-6-2,345
+1-6-3,678
+1-6-4,901
+1-9-1,45 MARKET STREET
+1-11-1,SYDNEY
+1-11-2,NSW
+1-11-3,2000
+2-4-1,DOE &amp; CO TRUSTEES PTY LTD
+2-6-1,98
+2-6-2,765
+2-6-3,432
+2-6-4,109
+2-6-5,(02) 9876 5432
+2-10-1,D
+2-15-1,62000
+2-15-2,123
+2-15-3,456
+2-15-4,789
+2-16-1,GREENFIELD FAMILY TRUST
+4-6-1,3606
+4-8-1,22870
+4-10-1,26476
+4-12-1,7069.35
+5-1-1,123
+5-1-2,456
+5-1-3,789
+5-8-1,26476
+5-17-1,26476
+6-3-1,463
+6-3-5,463
+6-4-1,15.64
+6-6-1,26939
+6-8-1,26939
+11-7-1,26939
+12-2-1,X
+12-3-1,DOE
+12-4-1,JOHN
+12-11-1,1
+12-11-2,4
+12-11-3,1945
+12-12-1,30
+12-13-1,8889
+12-25-1,1190
+12-28-1,152
+12-30-1,5.16
+12-33-1,7547
+12-35-1,2332.89
+14-2-2,X
+14-3-1,DOE
+14-4-1,JANE
+14-11-1,25
+14-11-2,12
+14-11-3,1950
+14-13-1,17779
+14-25-1,2380
+14-28-1,305
+14-30-1,10.32
+14-33-1,15094
+14-35-1,4665.77
+</code></pre></div>
+</details>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Workflow Overview</p>
+<ol>
+<li>Copy the original PDF to a working filename</li>
+<li>Create a marked-up PDF to verify field positions</li>
+<li>Generate interactive form fields</li>
+<li>Fill form fields using CSV data</li>
+<li>Capture filled form data back into a CSV for editing or reuse</li>
+</ol>
+</div>
+<h2 id="step-1-copy-the-source-pdf">Step 1: Copy the Source PDF</h2>
+<p>Begin by copying the original tax return PDF:</p>
+<div class="highlight"><pre><span></span><code>copy Trust-tax-return-2024.pdf example.pdf
+</code></pre></div>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li><code>example.pdf</code> — copied working PDF file.</li>
+</ul>
+<p>This protects the integrity of the original form by avoiding accidental overwrites or corruption. It also keeps all outputs organized and traceable by using a convenient base filename <code>example.pdf</code>.</p>
+<hr />
+<h2 id="step-2-create-markup-pdf-for-verification">Step 2: Create Markup PDF for Verification</h2>
+<p>Create a visual markup of the fields for manual verification:</p>
+<div class="highlight"><pre><span></span><code>flyfield --input-pdf example.pdf --markup
+</code></pre></div>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li><code>example-markup.pdf</code> — PDF showing detected field boxes and codes.</li>
+<li><code>example.csv</code> — updated field codes and metadata.</li>
+</ul>
+<p>Review this file carefully to validate the correctness and alignment of detected form fields against the original.</p>
+<hr />
+<h2 id="step-3-generate-interactive-pdf-form-fields">Step 3: Generate Interactive PDF Form Fields</h2>
+<p>The <code>--fields</code> option tells flyfield to detect placeholder boxes and add interactive fields.</p>
+<p>On long documents (e.g. 20 pages), this process can be slow.</p>
+<p><strong>Important best-practice:</strong></p>
+<ul>
+<li>Always process the full PDF to preserve consistent field codes that embed the original page number.</li>
+<li>Do <strong>not</strong> physically extract and save partial page PDFs before running — doing so changes the page numbering context, breaking reproducibility.</li>
+</ul>
+<p>If you want to <strong>limit processing</strong> while preserving field code consistency, use the <code>--pdf-pages</code> option. This processes only selected pages but retains original numbering.</p>
+<p>Example: restrict processing to pages 1, 2, 4–6, 11, 12, and 14:</p>
+<p>Run the command:</p>
+<div class="highlight"><pre><span></span><code>flyfield --input-pdf example.pdf --pdf-pages=&quot;1,2,4-6,11,12,14&quot; --fields
+</code></pre></div>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li><code>example-fields.pdf</code> — PDF with interactive form fields added</li>
+<li><code>example-field-generator.py</code> — Python script used to generate those fields</li>
+<li><code>example.csv</code> — extracted field codes and metadata</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title"><strong>Advanced User Bonus: Editing the Python Field Generator Script</strong></p>
+<p>This generated Python script can be modified to customize or unify fields, for instance to link repeated field entries across pages.</p>
+<p><strong>Example:</strong> Linking the Tax File Number (TFN) fields at the top of page 5 and page 1.</p>
+<ol>
+<li>Open <code>example-field-generator.py</code> in a text editor</li>
+<li>Locate the code block that defines fields at the top of page 5</li>
+<li>Change each field name in that section from something like<code>"5-1-1"</code>to reference the page 1 TFN field names, e.g., <code>"1-3-1"</code>, <code>"1-3-2"</code>, <code>"1-3-3"</code></li>
+<li>Save your changes</li>
+<li>Regenerate the filled PDF by running:
+<div class="highlight"><pre><span></span><code>python example-field-generator.py
+</code></pre></div></li>
+</ol>
+<p>This rebuilds <code>example-fields.pdf</code> with linked fields, so entering the TFN once will automatically update it on both pages.</p>
+</div>
+<hr />
+<h2 id="step-4-fill-form-fields-with-csv-data">Step 4: Fill Form Fields With CSV Data</h2>
+<p>After confirming fields, supply a CSV file containing at least two columns, <code>code</code> and <code>fill</code>, to fill the interactive form fields with your CSV data:</p>
+<div class="highlight"><pre><span></span><code>flyfield --input-pdf example-fields.pdf --fill example-fields-filled-capture.csv
+</code></pre></div>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li><code>example-fields-filled.pdf</code> — filled PDF form with CSV data inserted</li>
+<li><code>example-fields-filler.py</code> — Python script used to perform filling (editable for customization)</li>
+</ul>
+<hr />
+<h2 id="step-5-capture-data-from-filled-form">Step 5: Capture Data From Filled Form</h2>
+<p>Capture the filled form data back into a CSV file for review or reuse:</p>
+<div class="highlight"><pre><span></span><code>flyfield --input-pdf example-fields-filled.pdf --capture
+</code></pre></div>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li><code>example-fields-filled-capture.csv</code> — extracted form data, which can be edited and reused.</li>
+</ul>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Demonstrated</p>
+<ul>
+<li>Working safely with a <strong>copy</strong> of the original PDF to protect the source</li>
+<li>Validating detected form fields visually by generating a <strong>markup PDF</strong></li>
+<li>Improving efficiency by <strong>generating fields only on required pages</strong></li>
+<li>Tailoring workflows by <strong>direct editing and rerunning the generated Python field generation script</strong></li>
+<li>Managing data consistency by <strong>reusing CSV data</strong> for filling and capturing</li>
+</ul>
+</div>
+<hr />
+<p>This example provides a practical, real-world automation workflow for PDF form processing using flyfield. It assumes basic familiarity covered by the Quick Start Guide, guiding users through safely and effectively managing complex tax return forms.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="usage.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: User Guide">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                User Guide
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="process.html" class="md-footer__link md-footer__link--next" aria-label="Next: Process Overview">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Process Overview
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": ".", "features": ["navigation.footer", "content.action.edit"], "search": "assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
