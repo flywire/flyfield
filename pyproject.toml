@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "flyfield"
-version = "2025.9.17"
+version = "2025.09.17"
 description = "Tools for extracting, processing, and generating interactive fields for PDFs containing white box fields."
 readme = "README.md"
 requires-python = ">=3.9"
