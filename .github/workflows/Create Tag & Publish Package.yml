@@ -11,14 +11,15 @@ permissions:
 jobs:
   tag_and_release:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Full history to check tags
+          fetch-depth: 0
 
       - name: Setup Python 3.11
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.11
 
@@ -37,18 +38,11 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Fail if tag exists (skip release)
+      - name: Fail if tag exists
         if: ${{ steps.check_tag.outputs.exists == 'true' }}
         run: |
-          echo "Tag ${{ steps.vars.outputs.tag }} already exists; skipping tag creation and release."
+          echo "Tag ${{ steps.vars.outputs.tag }} already exists."
           exit 1
-
-      - name: Create date-based tag
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "${{ steps.vars.outputs.tag }}" -m "Tag created by GitHub Actions on $(date)"
-          git push origin "${{ steps.vars.outputs.tag }}"
 
       - name: Update version in pyproject.toml
         run: |
@@ -60,9 +54,19 @@ jobs:
         run: |
           VERSION="${{ steps.vars.outputs.tag }}"
           VERSION="${VERSION#v}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add pyproject.toml
-          git commit -m "ci: set version to $VERSION" || echo "No changes to commit"
-          git push origin HEAD:main || true
+          git commit -m "ci: set version to $VERSION"
+
+      - name: Create date-based tag
+        run: |
+          git tag -a "${{ steps.vars.outputs.tag }}" -m "Tag created by GitHub Actions on $(date)"
+
+      - name: Push commit and tag
+        run: |
+          git push origin HEAD:main
+          git push origin "${{ steps.vars.outputs.tag }}"
 
       - name: Build package
         run: |
