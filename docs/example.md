@@ -128,7 +128,7 @@ flyfield --input-pdf example-fields.pdf --fill example-fields-filled-capture.csv
 Capture the filled form data back into a CSV file for review or reuse:
 
 ```
-flyfield --input-pdf example-fields-filled.pdf --capture
+flyfield --input-pdf example-fields-filled.pdf --input-csv example.csv --capture
 ```
 
 **Outputs:**
