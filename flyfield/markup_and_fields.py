@@ -2,7 +2,6 @@
 Functions for PDF markup and form field annotation.
 """
 
-
 import csv
 import logging
 import re
@@ -14,7 +13,7 @@ import fitz  # PyMuPDF
 
 from . import config
 from .config import GAP, GAP_GROUP, F
-from .utils import conditional_merge_list
+from .utils import conditional_merge_list, format_money_space, parse_money_space
 
 logger = logging.getLogger(__name__)
 
@@ -250,8 +249,6 @@ def run_fill_pdf_fields(
         template_pdf_path (str): Path to the input (template) PDF file.
         generator_script_path (str): Path where the generated fill script will be saved.
     """
-    from .utils import format_money_space, parse_money_space
-
     fill_data = {}
     try:
         with open(csv_path, newline="", encoding="utf-8") as f:
@@ -266,45 +263,49 @@ def run_fill_pdf_fields(
                 if all(v == "" or v == "0" for v in stripped_row.values()):
                     continue
                 rows.append(stripped_row)
-        # Flatten boxes if any and merge to rows
+            # Flatten boxes if any and merge to rows
 
-        if boxes:
-            flat_boxes = [entry for sublist in boxes.values() for entry in sublist]
-            conditional_merge_list(rows, flat_boxes, "code", ["field_type"])
-        for row in rows:
-            field = row.get("code")
-            value = row.get("fill")
-            field_type = row.get("field_type", "")
-            if not field or value in ("", "0"):
-                continue
-            if field_type in ("Dollars", "DollarCents"):
-                decimal = field_type == "DollarCents"
-                try:
-                    amount = parse_money_space(value, decimal=decimal)
-                    value = format_money_space(amount, decimal=decimal)
-                except Exception as e:
-                    print(
-                        f"Warning: Could not format value '{value}' for field_type '{field_type}': {e}"
-                    )
-            elif field_type in ("Currency", "CurrencyDecimal"):
-                import re
-
-                value = re.sub(r"\D", "", value)
-            fill_data[field] = value
+            if boxes:
+                flat_boxes = [entry for sublist in boxes.values() for entry in sublist]
+                conditional_merge_list(rows, flat_boxes, "code", ["field_type"])
+            for row in rows:
+                field = row.get("code")
+                value = row.get("fill")
+                field_type = row.get("field_type", "")
+                if not field or value in ("", "0"):
+                    continue
+                if field_type in ("Dollars", "DollarCents"):
+                    decimal = field_type == "DollarCents"
+                    try:
+                        amount = parse_money_space(value, decimal=decimal)
+                        value = format_money_space(amount, decimal=decimal)
+                    except Exception as e:
+                        print(
+                            f"Warning: Could not format value '{value}' "
+                            f"for field_type '{field_type}': {e}"
+                        )
+                elif field_type in ("Currency", "CurrencyDecimal"):
+                    value = re.sub(r"[^\d]", "", value)
+                fill_data[field] = value
     except Exception as e:
         print(f"Error reading CSV {csv_path}: {e}")
         return
     fill_dict_items = ",\n ".join(f'"{k}": {repr(v)}' for k, v in fill_data.items())
+
     script_content = f"""\
 from PyPDFForm import PdfWrapper
+import sys
+
 print("Starting to fill PDF fields...", flush=True)
 try:
     filled = PdfWrapper(
         "{template_pdf_path}",
-        adobe_mode=False
+        need_appearances=True,     # helps text rendering
+        sign_enable=True,          # prepares for digital signatures
+        preserve_metadata=True,    # keeps Title, Author, etc.
     ).fill(
         {{
-            {fill_dict_items}
+ {fill_dict_items}
         }},
         flatten=False
     )
@@ -324,7 +325,9 @@ except Exception as e:
         return
     try:
         result = subprocess.run(
-            [sys.executable, generator_script_path], capture_output=True, text=True
+            [sys.executable, generator_script_path],
+            capture_output=True,
+            text=True,
         )
         print("Fill script stdout:")
         print(result.stdout)
