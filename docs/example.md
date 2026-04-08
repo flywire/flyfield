@@ -66,8 +66,6 @@ Review this file carefully to validate the correctness and alignment of detected
 
 The `--fields` option tells flyfield to detect placeholder boxes and add interactive fields.
 
-On long documents (e.g. 20 pages), this process can be slow.
-
 **Important best-practice:**
 
 - Always process the full PDF to preserve consistent field codes that embed the original page number.

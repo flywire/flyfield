@@ -148,46 +148,33 @@ def generate_form_fields_script(
     """
     lines = [
         "from PyPDFForm import Fields, PdfWrapper",
-        f'pdf = PdfWrapper("{input_pdf}")',
     ]
     try:
         with open(csv_path, newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             current_page = None
+            page_fields = {}
+            
             for row in reader:
                 page_number = int(row["page_num"])
-
-                # Skip rows whose page number is not in PDF_PAGES if PDF_PAGES filter is set
-
+    
                 if config.PDF_PAGES and page_number not in config.PDF_PAGES:
                     continue
                 code = row["code"]
-                if (
-                    not code
-                    or row["block_length"] in ("", "0")
-                    or row.get("field_type") == "Skip"
-                ):
+                if not code or row["block_length"] in ("", "0") or row.get("field_type") == "Skip":
                     continue
-                if page_number != current_page:
-                    lines.append(f'print("Starting page {page_number}...", flush=True)')
-                    current_page = page_number
-                block_length = (
-                    int(float(row["block_length"]))
-                    if row["block_length"] not in ("", "0")
-                    else 0
-                )
-                width = (
-                    float(row["block_width"])
-                    if row["block_width"] not in ("", "0")
-                    else 0
-                )
+                    
+                block_length = int(float(row["block_length"])) if row["block_length"] not in ("", "0") else 0
+                width = float(row["block_width"]) if row["block_width"] not in ("", "0") else 0
                 y, height = float(row["bottom"]), float(row.get("height", 0))
-                x, width_adjusted, extra_args = adjust_form_boxes(
-                    row, width, block_length
-                )
+                x, width_adjusted, extra_args = adjust_form_boxes(row, width, block_length)
                 sanitized_code = re.sub(r"[^\w\-_]", "_", code)
+                
+                field_type = row.get("field_type", "TextField")
+                field_class_map = {"CheckBox": "CheckBoxField", "Dropdown": "DropdownField"}
+                field_class = field_class_map.get(field_type, "TextField")
+                
                 base_args = [
-                    #                    'widget_type="text"',
                     f'name="{sanitized_code}"',
                     f"page_number={page_number}",
                     f"x={x:.2f}",
@@ -199,13 +186,26 @@ def generate_form_fields_script(
                     "border_width=0",
                 ]
                 args = [*base_args, *extra_args]
-                lines.append(f"pdf.create_field(Fields.TextField({', '.join(args)}))")
-            lines.extend(
-                [
-                    f'pdf.write("{output_pdf_with_fields}")',
-                    'print("Created form fields PDF.", flush=True)',
-                ]
-            )
+                
+                if page_number not in page_fields:
+                    page_fields[page_number] = []
+                page_fields[page_number].append(f'    Fields.{field_class}({", ".join(args)}),')
+            
+            lines.append(f'pdf = PdfWrapper("{input_pdf}")')
+            for page_num, fields_list in sorted(page_fields.items()):
+                lines.append('')
+                lines.append(f'print("Processing page {page_num}...", flush=True)')
+                lines.append(f'page_fields = [')
+                lines.extend(fields_list)
+                lines.append(']')
+                lines.append(f'pdf.bulk_create_fields(page_fields)')
+            
+            lines.extend([
+                '',
+                f'pdf.write("{output_pdf_with_fields}")',
+                'print("Created form fields PDF.", flush=True)',
+            ])
+        
         with open(script_path, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
     except Exception as e:

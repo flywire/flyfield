@@ -87,7 +87,6 @@ Each phase is implemented in separate Python modules allowing flexible scripting
 !!! Note "Additional Notes"
 
 	- Only vector PDFs with clear white boxes are supported; scanned or rasterized PDFs are not compatible.
-	- Large PDFs may take longer during field generation (`--fields`), so it is recommended to run this step sparingly and cache outputs.
 	- Debug mode (`--debug`) generates helpful intermediate CSVs for each processing stage, improving traceability and aiding issue diagnosis.
 	- All generated scripts are standalone and can be customized for advanced workflows or integration into automated pipelines.
 

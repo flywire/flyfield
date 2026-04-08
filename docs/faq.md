@@ -39,15 +39,6 @@ This prints the installed version.
 
 ***
 
-### Q: How do I speed up processing on large PDFs?
-
-**A:** The `--fields` step (field generation) can be slow. Best practices:
-
-- Run `--fields` only once per PDF version.
-- Reuse cached CSV and markup PDF files for subsequent steps.
-
-***
-
 ### Q: My field codes are inconsistent when extracting from a subset of pages. Why?
 
 **A:** Field codes embed page number context. Always run extraction on the full PDF to maintain consistent codes. Use `--pdf-pages` to limit processing without renumbering.
