@@ -217,24 +217,27 @@ def process_boxes(pdf_path: str, csv_path: str) -> Dict[int, List[Dict]]:
         return defaultdict(list)
     if logger.isEnabledFor(logging.DEBUG):
         write_csv(boxes, csv_path.replace(".csv", "-extracted.csv"))
+
     filtered_boxes = []
     for page_num in range(1, len(doc) + 1):
         page_boxes = [p for p in boxes if p["page_num"] == page_num]
         filtered_boxes.extend(filter_boxes(doc[page_num - 1], page_boxes))
     doc.close()
-
     if logger.isEnabledFor(logging.DEBUG):
         write_csv(filtered_boxes, csv_path.replace(".csv", "-grouped.csv"))
+
     filtered_boxes = remove_duplicates(filtered_boxes)
     filtered_boxes = sort_boxes(filtered_boxes, decimal_places=-1)
-
     if logger.isEnabledFor(logging.DEBUG):
         write_csv(filtered_boxes, csv_path.replace(".csv", "-filtered.csv"))
-    page_dict = calculate_layout_fields(filtered_boxes)
 
+    page_dict = calculate_layout_fields(filtered_boxes)
     if logger.isEnabledFor(logging.DEBUG):
         write_csv(filtered_boxes, csv_path.replace(".csv", "-layout.csv"))
+
     page_dict = assign_numeric_blocks(page_dict)
+    if logger.isEnabledFor(logging.DEBUG):
+        write_csv(filtered_boxes, csv_path.replace(".csv", "-fieldtype.csv"))
 
     write_csv(page_dict, csv_path)
     return page_dict
