@@ -191,7 +191,7 @@ def generate_form_fields_script(
                     page_fields[page_number] = []
                 page_fields[page_number].append(f'    Fields.{field_class}({", ".join(args)}),')
             
-            lines.append(f'pdf = PdfWrapper("{input_pdf}")')
+            lines.append(f'pdf = PdfWrapper("{input_pdf}", preserve_metadata=True)')
             for page_num, fields_list in sorted(page_fields.items()):
                 lines.append('')
                 lines.append(f'print("Processing page {page_num}...", flush=True)')
@@ -274,6 +274,8 @@ def run_fill_pdf_fields(
                 field_type = row.get("field_type", "")
                 if not field or value in ("", "0"):
                     continue
+                if field_type in ("DollarCents", "CurrencyDecimal"):
+                    value = f"{round(float(value), 2):.2f}"
                 if field_type in ("Dollars", "DollarCents"):
                     decimal = field_type == "DollarCents"
                     try:

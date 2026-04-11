@@ -312,23 +312,22 @@ def save_pdf_form_data_to_csv(
         flat_boxes = [entry for sublist in boxes.values() for entry in sublist]
         conditional_merge_list(data, flat_boxes, "code", ["field_type"])
     try:
-        with open(csv_path, mode="w", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file)
-            # Write CSV header
-
-            writer.writerow(["code", "fill"])
-
-            # Write each field record as a CSV row
+        with open(csv_path, mode="w", encoding="utf-8") as file:
+            # Write header
+            file.write('"code","fill"\n')
 
             for field in data:
-                code = field.get("code")
-                fill_value = field.get("value")
-                field_type = field.get("field_type")
+                code = field.get("code", "")
+                fill_value = field.get("value", "")
+                field_type = field.get("field_type", "")
 
                 logger.debug(
                     f"Code: {code}, Raw Value: {fill_value}, Field Type: {field_type}"
                 )
-                if field_type in NUMERIC_FIELD_TYPES and isinstance(fill_value, str):
+
+                money_types = {"Currency", "CurrencyDecimal", "DollarCents", "Dollars"}
+
+                if field_type in money_types and isinstance(fill_value, str):
                     try:
                         if field_type == "CurrencyDecimal":
                             amount = parse_implied_decimal(fill_value)
@@ -343,6 +342,10 @@ def save_pdf_form_data_to_csv(
                         logger.warning(
                             f"Failed parsing money value '{fill_value}' for field '{code}': {e}"
                         )
-                writer.writerow([code, fill_value])
+                        fill_value = f'"{fill_value}"'
+                else:
+                    fill_value = f'"{fill_value}"'
+
+                file.write(f'"{code}",{fill_value}\n')
     except Exception as e:
         logger.error(f"Failed to write CSV file {csv_path}: {e}")
