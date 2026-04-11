@@ -15,7 +15,7 @@ keywords = ["pdf", "form", "fields", "extraction", "pymupdf", "pypdfforms"]
 license = {text = "GPL-3.0-or-later"}
 dependencies = [
   "PyMuPDF>=1.18.0",
-  "PyPDFForm>=3.0.0,<4.0.0",
+  "PyPDFForm>=3.0.0,<5.0.0",
 ]
 
 classifiers = [

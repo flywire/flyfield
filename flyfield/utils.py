@@ -11,6 +11,33 @@ from typing import Dict, List, Optional, Tuple
 from .config import COLOR_WHITE as TARGET_COLOUR
 
 
+def version() -> str:
+    """
+    Return the current version string of the library/module.
+
+    Returns:
+        str: Version string.
+    """
+    try:
+        # Python 3.8+
+
+        from importlib.metadata import PackageNotFoundError
+        from importlib.metadata import version as pkg_version
+    except ImportError:
+        # For Python <3.8
+
+        from importlib_metadata import PackageNotFoundError
+        from importlib_metadata import version as pkg_version
+    try:
+        return pkg_version("flyfield")
+    except PackageNotFoundError:
+        return "unknown"
+
+
+FLYFIELD_VERSION = version()
+FLYFIELD_KEYWORDS = f"flyfield V{FLYFIELD_VERSION} AcroForm"
+
+
 def add_suffix_to_filename(filename: str, suffix: str) -> str:
     """
     Add a suffix before the file extension in a filename.
@@ -212,6 +239,33 @@ def version() -> str:
         return pkg_version("flyfield")
     except PackageNotFoundError:
         return "unknown"
+
+
+def update_metadata(
+    pdf_path: str,
+    keywords: Optional[str] = None,
+    title: Optional[str] = None,
+    author: Optional[str] = None,
+) -> None:
+    """Update PDF metadata (/Info dictionary) using pypdf."""
+    from pypdf import PdfWriter
+
+    writer = PdfWriter(clone_from=pdf_path)
+    meta = dict(writer.metadata or {})
+
+    if keywords is not None:
+        meta["/Keywords"] = keywords
+    if title is not None:
+        meta["/Title"] = title
+    if author is not None:
+        meta["/Author"] = author
+
+    # Normalise: remove None entries, then set
+    meta = {k: v for k, v in meta.items() if v is not None}
+
+    writer.add_metadata(meta)
+    with open(pdf_path, "wb") as f:
+        writer.write(f)
 
 
 def parse_pages(pages_str: str) -> List[int]:

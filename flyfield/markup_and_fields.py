@@ -13,7 +13,7 @@ import fitz  # PyMuPDF
 
 from . import config
 from .config import GAP, GAP_GROUP, F
-from .utils import conditional_merge_list, format_money_space, parse_money_space
+from .utils import conditional_merge_list, format_money_space, parse_money_space, FLYFIELD_KEYWORDS, update_metadata
 
 logger = logging.getLogger(__name__)
 
@@ -154,26 +154,26 @@ def generate_form_fields_script(
             reader = csv.DictReader(f)
             current_page = None
             page_fields = {}
-            
+
             for row in reader:
                 page_number = int(row["page_num"])
-    
+
                 if config.PDF_PAGES and page_number not in config.PDF_PAGES:
                     continue
                 code = row["code"]
                 if not code or row["block_length"] in ("", "0") or row.get("field_type") == "Skip":
                     continue
-                    
+
                 block_length = int(float(row["block_length"])) if row["block_length"] not in ("", "0") else 0
                 width = float(row["block_width"]) if row["block_width"] not in ("", "0") else 0
                 y, height = float(row["bottom"]), float(row.get("height", 0))
                 x, width_adjusted, extra_args = adjust_form_boxes(row, width, block_length)
                 sanitized_code = re.sub(r"[^\w\-_]", "_", code)
-                
+
                 field_type = row.get("field_type", "TextField")
                 field_class_map = {"CheckBox": "CheckBoxField", "Dropdown": "DropdownField"}
                 field_class = field_class_map.get(field_type, "TextField")
-                
+
                 base_args = [
                     f'name="{sanitized_code}"',
                     f"page_number={page_number}",
@@ -186,11 +186,11 @@ def generate_form_fields_script(
                     "border_width=0",
                 ]
                 args = [*base_args, *extra_args]
-                
+
                 if page_number not in page_fields:
                     page_fields[page_number] = []
                 page_fields[page_number].append(f'    Fields.{field_class}({", ".join(args)}),')
-            
+
             lines.append(f'pdf = PdfWrapper("{input_pdf}", preserve_metadata=True)')
             for page_num, fields_list in sorted(page_fields.items()):
                 lines.append('')
@@ -199,13 +199,16 @@ def generate_form_fields_script(
                 lines.extend(fields_list)
                 lines.append(']')
                 lines.append(f'pdf.bulk_create_fields(page_fields)')
-            
+
             lines.extend([
                 '',
                 f'pdf.write("{output_pdf_with_fields}")',
+                '',
+                'from flyfield.utils import update_metadata',
+                 f'update_metadata("{output_pdf_with_fields}", keywords={repr(FLYFIELD_KEYWORDS)})',
                 'print("Created form fields PDF.", flush=True)',
             ])
-        
+
         with open(script_path, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
     except Exception as e:
@@ -297,9 +300,11 @@ def run_fill_pdf_fields(
     script_content = f"""\
 from PyPDFForm import PdfWrapper
 import sys
+from flyfield.utils import update_metadata
 
 print("Starting to fill PDF fields...", flush=True)
 try:
+    output_pdf = "{output_pdf_path}"
     filled = PdfWrapper(
         "{template_pdf_path}",
         need_appearances=True,     # helps text rendering
@@ -311,8 +316,10 @@ try:
         }},
         flatten=False
     )
-    filled.write("{output_pdf_path}")
-    print("Filled PDF saved to {output_pdf_path}", flush=True)
+    filled.write(output_pdf)
+
+    update_metadata(output_pdf, keywords={repr(FLYFIELD_KEYWORDS)})
+    print(f"Filled PDF saved to {{output_pdf}}", flush=True)
 except Exception as e:
     print(f"Exception during filling: {{e}}", file=sys.stderr, flush=True)
     sys.exit(1)
