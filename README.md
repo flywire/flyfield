@@ -19,6 +19,8 @@ Transform static white box PDF forms into interactive forms for fast automation.
 ***
 ## Installation
 
+Available on [PyPI](https://pypi.org/project/flyfield/) for easy installation and updates.
+
 Install with pipx:
 
 ```
@@ -62,8 +64,8 @@ flyfield --input-pdf myfile.pdf --markup
 
 ```
 flyfield --input-pdf form.pdf --markup --fields  
-flyfield --input-pdf form-fields.pdf --input-csv form.csv --fill form-fill.csv  
-flyfield --input-pdf form-filled.pdf --capture  
+flyfield --input-pdf form-fields.pdf --fill form-fill.csv  
+flyfield --input-pdf form-filled.pdf --input-csv form.csv --capture  
 ```
 
 
