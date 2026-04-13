@@ -5,18 +5,49 @@ Helper functions for parsing, formatting, and validation.
 """
 
 import os
+import pymupdf
 import re
 from typing import Dict, List, Optional, Tuple
 
 from .config import COLOR_WHITE as TARGET_COLOUR
 
 
-def version() -> str:
-    """
-    Return the current version string of the library/module.
+def get_pdf_id(filepath: str) -> str:
+    """Get the PDF /ID array from the trailer.
+
+    Args:
+        filepath: Path to the PDF file.
 
     Returns:
-        str: Version string.
+        /ID array as a string, e.g. '[<...> <...>]]'.
+    """
+    doc = pymupdf.open(filepath)
+    try:
+        obj_type, id_str = doc.xref_get_key(-1, "ID")
+        if obj_type != "array":
+            raise ValueError(f"Expected /ID to be an array, got {obj_type}")
+        return id_str
+    finally:
+        doc.close()
+
+
+def is_currency_type(field_name: str) -> bool:
+    """Check if field_name indicates a currency‑type field.
+
+    Args:
+        field_name: Field name string.
+
+    Returns:
+        True if 'CURRENCY' is in field_name (case‑insensitive).
+    """
+    return 'CURRENCY' in field_name.upper()
+
+
+def version() -> str:
+    """Return the library/module version.
+
+    Returns:
+        Version string, or 'unknown' if not installed.
     """
     try:
         # Python 3.8+

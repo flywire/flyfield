@@ -12,6 +12,7 @@ import fitz
 
 from . import config
 from .extract import process_boxes
+from .fdf_utils import (fill_pdf_from_fdf, save_pdf_form_data_to_fdf)
 from .io_utils import load_boxes_from_csv, save_pdf_form_data_to_csv
 from .markup_and_fields import (
     generate_form_fields_script,
@@ -21,12 +22,7 @@ from .markup_and_fields import (
 )
 from .utils import add_suffix_to_filename, parse_pages, version
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-_log_handler = logging.StreamHandler()
-_log_formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
-_log_handler.setFormatter(_log_formatter)
-logger.addHandler(_log_handler)
+logger = logging.getLogger(__name__)  # type: logging.Logger
 
 
 def parse_arguments():
@@ -60,7 +56,7 @@ def parse_arguments():
         help='Comma separated page numbers/ranges to process, e.g. "1,3-4"',
     )
     parser.add_argument(
-        "--input-csv", help="Input CSV file for loading blocks (skip extraction)"
+        "--input-csv", help="Load blocks to skip field analysis, required with --capture"
     )
     parser.add_argument(
         "--markup", action="store_true", help="Mark up blocks in the output PDF"
@@ -69,10 +65,15 @@ def parse_arguments():
         "--fields", action="store_true", help="Generate PDF with form fields"
     )
     parser.add_argument(
-        "--fill", metavar="FILL_CSV", help="CSV file with values to fill PDF fields"
+        "--fill",
+        metavar="FILL_SOURCE",
+        help="CSV or FDF file with values to fill PDF fields",
     )
     parser.add_argument(
         "--capture", action="store_true", help="Capture form field data into CSV"
+    )
+    parser.add_argument(
+        "--fdf", action="store_true", help="Use with --capture for FDF format"
     )
     parser.add_argument("--debug", action="store_true", help="Enable debug logging")
     args = parser.parse_args()
@@ -94,22 +95,22 @@ def main():
     """
     args = parse_arguments()
 
-    # Simplified logging setup with basicConfig
-
+    # Configure logging once via basicConfig
     log_level = logging.DEBUG if args.debug else logging.INFO
     logging.basicConfig(
-        level=log_level, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
+        level=log_level,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
 
-    global logger
-    logger = logging.getLogger(__name__)
     logger.debug("Debug logging enabled")
 
     input_pdf = args.input_pdf
     if not os.path.isfile(input_pdf):
         logger.fatal(f"Input PDF file does not exist: {input_pdf}")
         sys.exit(1)
+
     base_csv = os.path.splitext(input_pdf)[0] + ".csv"
+    base = os.path.splitext(input_pdf)[0]
 
     if args.pdf_pages:
         config.PDF_PAGES.clear()
@@ -130,15 +131,13 @@ def main():
             logger.fatal(f"Failed to process boxes for PDF: {input_pdf}")
             sys.exit(1)
     if args.markup:
-        marked_up_pdf = add_suffix_to_filename(input_pdf, config.DEFAULT_MARKUP_SUFFIX)
+        marked_up_pdf = base + config.DEFAULT_MARKUP_SUFFIX + ".pdf"
         markup_pdf(input_pdf, page_dict, marked_up_pdf)
         logger.info(f"Markup PDF generated: {marked_up_pdf}")
         input_pdf = marked_up_pdf
     if args.fields:
-        fields_pdf = add_suffix_to_filename(input_pdf, config.DEFAULT_FIELDS_SUFFIX)
-        generator_script = (
-            os.path.splitext(input_pdf)[0] + config.DEFAULT_FIELD_GENERATOR_SUFFIX
-        )
+        fields_pdf = base + config.DEFAULT_FIELDS_SUFFIX + ".pdf"
+        generator_script = base + config.DEFAULT_FIELD_GENERATOR_SUFFIX
         script_path = generate_form_fields_script(
             args.input_csv or base_csv, input_pdf, fields_pdf, generator_script
         )
@@ -146,15 +145,30 @@ def main():
         logger.info(f"Form fields added and saved: {fields_pdf}")
         input_pdf = fields_pdf
     if args.fill:
-        filled_pdf = add_suffix_to_filename(input_pdf, config.DEFAULT_FILL_SUFFIX)
-        filler_script = os.path.splitext(input_pdf)[0] + config.DEFAULT_FILLER_SUFFIX
-        logger.info(f"Filling PDF fields with CSV: {args.fill}")
-        run_fill_pdf_fields(args.fill, filled_pdf, input_pdf, filler_script, page_dict)
+        filled_pdf = base + config.DEFAULT_FILL_SUFFIX + ".pdf"
+        filler_script = base + config.DEFAULT_FILLER_SUFFIX
+        ext = os.path.splitext(args.fill)[1].lower()
+        is_fdf = (ext == ".fdf")
+        logger.info(f"Filling PDF fields {('as FDF' if args.fdf else 'from CSV')}: {args.fill}")
+        if is_fdf:
+            # treat args.fill as FDF file
+            result = fill_pdf_from_fdf(input_pdf, args.fill, filled_pdf)
+            logger.debug(
+                f"Filled {result.get('fields_count', 0)} fields into {result['output_pdf']} from FDF"
+            )
+        else:
+            # treat args.fill as CSV
+            run_fill_pdf_fields(args.fill, filled_pdf, input_pdf, filler_script, page_dict)
         logger.info(f"Filled PDF saved to {filled_pdf}")
     if args.capture:
-        capture_csv = os.path.splitext(input_pdf)[0] + config.DEFAULT_CAPTURE_SUFFIX
-        save_pdf_form_data_to_csv(input_pdf, capture_csv, page_dict)
-        logger.info(f"Captured filled fields to {capture_csv}")
+        if args.fdf:
+            capture_path = base + config.DEFAULT_CAPTURE_SUFFIX + ".fdf"
+            save_pdf_form_data_to_fdf(input_pdf, capture_path, empty_fields=False)
+            logger.info(f"Captured form data as FDF to {capture_path}")
+        else:
+            capture_path = base + config.DEFAULT_CAPTURE_SUFFIX + ".csv"
+            save_pdf_form_data_to_csv(input_pdf, capture_path, page_dict)
+            logger.info(f"Captured numeric form data to {capture_path}")
 
 
 if __name__ == "__main__":

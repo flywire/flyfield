@@ -4,7 +4,7 @@
 # Default file paths
 
 DEFAULT_INPUT_PDF = "input.pdf"
-DEFAULT_CAPTURE_SUFFIX = "-capture.csv"
+DEFAULT_CAPTURE_SUFFIX = "-capture"
 DEFAULT_FIELD_GENERATOR_SUFFIX = "-field-generator.py"
 DEFAULT_FILLER_SUFFIX = "-filler.py"
 DEFAULT_MARKUP_SUFFIX = "-markup"

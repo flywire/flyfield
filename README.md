@@ -54,9 +54,10 @@ flyfield --input-pdf myfile.pdf --markup
 
 - `--markup` Generate a PDF highlighting white boxes
 - `--fields` Add interactive form fields
-- `--fill` Fill form fields using data from a CSV file
+- `--fill` Fill form fields using data from a CSV or FDF file
 - `--capture` Export filled form data to CSV
 - `--input-csv` Load field data from a CSV instead of extracting
+- `--fdf` Use with --capture for FDF format
 - `--debug` Show detailed processing logs
 
 
