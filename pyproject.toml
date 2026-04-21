@@ -46,3 +46,7 @@ dev = [
   "pytest>=7.4",
   "tox>=4.19",
 ]
+
+[project.urls]
+Homepage = "https://github.com/flywire/flyfield"
+Documentation = "https://flywire.github.io/flyfield/"
