@@ -31,7 +31,7 @@ def markup_pdf(
     Args:
         pdf_path (str): Input PDF file.
         page_dict (dict): Pages and boxes with layout info.
-        output_pdf_path (str): Output marked PDF file path.
+        output_pdf_path (str): Path where the filled PDF should be saved.
         mark_color (tuple): RGB float tuple for marker color.
         mark_radius (int or float): Radius of circle marks.
 
@@ -130,29 +130,25 @@ def adjust_form_boxes(
 
 def generate_form_fields_script(
     csv_path: str,
-    input_pdf: str,
-    output_pdf_with_fields: str,
-    script_path: str,
+    input_pdf_path: str,
+    output_pdf_path: str,
+    script: str,
 ) -> str:
     """
     Generate a standalone Python script to create PDF form fields from CSV block data.
 
     Args:
         csv_path (str): CSV data path.
-        input_pdf (str): Input PDF to annotate.
-        output_pdf_with_fields (str): Output annotated PDF.
-        script_path (str): Output script file path.
+        input_pdf_path (str): Input PDF to annotate.
+        output_pdf_path (str): Output annotated PDF.
+        script (str): Output script file path.
 
     Returns:
         str: Path to the generated script file.
     """
-    lines = [
-        "from PyPDFForm import Fields, PdfWrapper",
-    ]
     try:
         with open(csv_path, newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
-            current_page = None
             page_fields = {}
 
             for row in reader:
@@ -168,64 +164,95 @@ def generate_form_fields_script(
                 width = float(row["block_width"]) if row["block_width"] not in ("", "0") else 0
                 y, height = float(row["bottom"]), float(row.get("height", 0))
                 x, width_adjusted, extra_args = adjust_form_boxes(row, width, block_length)
-                sanitized_code = re.sub(r"[^\w\-_]", "_", code)
-
-                field_type = row.get("field_type", "TextField")
-                field_class_map = {"CheckBox": "CheckBoxField", "Dropdown": "DropdownField"}
-                field_class = field_class_map.get(field_type, "TextField")
+                sanitised_code = re.sub(r"[^\w\-_]", "_", code)
 
                 base_args = [
-                    f'name="{sanitized_code}"',
+                    f'name="{sanitised_code}"',
                     f"page_number={page_number}",
                     f"x={x:.2f}",
                     f"y={y:.2f}",
-                    f"height={height:.2f}",
                     f"width={width_adjusted:.2f}",
-                    "bg_color=(0,0,0,0)",
-                    "border_color=(0,0,0,0)",
-                    "border_width=0",
                 ]
-                args = [*base_args, *extra_args]
 
-                if page_number not in page_fields:
-                    page_fields[page_number] = []
-                page_fields[page_number].append(f'    Fields.{field_class}({", ".join(args)}),')
+                field_line = f'text_field({", ".join(base_args + extra_args)}),'
 
-            lines.append(f'pdf = PdfWrapper("{input_pdf}", preserve_metadata=True)')
+                page_fields.setdefault(page_number, []).append(field_line)
+
+            # Build PAGES dict with left-aligned fields
+            pages_blocks = []
             for page_num, fields_list in sorted(page_fields.items()):
-                lines.append('')
-                lines.append(f'print("Processing page {page_num}...", flush=True)')
-                lines.append(f'page_fields = [')
-                lines.extend(fields_list)
-                lines.append(']')
-                lines.append(f'pdf.bulk_create_fields(page_fields)')
+                fields_str = '\n'.join(fields_list)
+                page_block = f"""    {page_num}: [
+{fields_str}
+    ],"""
+                pages_blocks.append(page_block)
 
-            lines.extend([
-                '',
-                f'pdf.write("{output_pdf_with_fields}")',
-                '',
-                'from flyfield.utils import update_metadata',
-                 f'update_metadata("{output_pdf_with_fields}", keywords={repr(FLYFIELD_KEYWORDS)})',
-                'print("Created form fields PDF.", flush=True)',
-            ])
+            pages_dict = ''.join(pages_blocks)   # or ''.join([...]) if you want it as one block
 
-        with open(script_path, "w", encoding="utf-8") as f:
-            f.write("\n".join(lines))
+            script_content = f"""from PyPDFForm import Fields, PdfWrapper
+import sys
+
+try:
+    from flyfield.utils import update_metadata
+except ModuleNotFoundError:
+    def update_metadata(path, keywords=None):
+        print("WARNING: 'flyfield' module not found; metadata update skipped.", flush=True)
+
+output_pdf_path = {repr(output_pdf_path)}
+pdf = PdfWrapper({repr(input_pdf_path)}, preserve_metadata=True)
+
+def text_field(name, page_number, x, y, width, **kwargs):
+    \"\"\"
+    Helper for common TextField defaults.
+    \"\"\"
+    return Fields.TextField(
+        name=name,
+        page_number=page_number,
+        x=x,
+        y=y,
+        width=width,
+        height=16.50,
+        bg_color=(0, 0, 0, 0),
+        border_color=(0, 0, 0, 0),
+        border_width=0,
+        tooltip='Enter data',  # Fails
+        **kwargs,
+    )
+
+# ========== EDITABLE FIELD DESCRIPTIONS ==========
+PAGES = {{
+{pages_dict}
+}}
+# ==========================================
+
+print("Creating PDF form fields...", flush=True)
+for page_num, fields in sorted(PAGES.items()):
+    print(f"Processing page {{page_num}}...", flush=True)
+    pdf.bulk_create_fields(fields)
+
+pdf.write(output_pdf_path)
+update_metadata(output_pdf_path, keywords={repr(FLYFIELD_KEYWORDS)})
+print(f"Form fields PDF saved to {{output_pdf_path}}", flush=True)
+"""
+
+        with open(script, "w", encoding="utf-8") as f:
+            f.write(script_content)
+
     except Exception as e:
         logger.error(f"Failed to generate form fields script: {e}")
-    return script_path
+    return script
 
 
-def run_standalone_script(script_path: str) -> None:
+def run_standalone_script(script: str) -> None:
     """
     Execute a standalone script for PDF form field creation.
 
     Args:
-        script_path (str): Path to the script to run.
+        script (str): Path to the script to run.
     """
-    print(f"Running generated form field creation script: {script_path}")
+    print(f"Running generated form field creation script: {script}")
     try:
-        result = subprocess.run([sys.executable, "-u", script_path], text=True)
+        result = subprocess.run([sys.executable, "-u", script], text=True)
         if result.returncode != 0:
             raise RuntimeError(
                 f"Generated script failed with exit code {result.returncode}"
@@ -238,7 +265,7 @@ def run_fill_pdf_fields(
     csv_path: str,
     output_pdf_path: str,
     template_pdf_path: str,
-    generator_script_path: str,
+    generator_script: str,
     boxes: Optional[Dict[int, List[Dict]]] = None,
 ) -> None:
     """
@@ -250,7 +277,7 @@ def run_fill_pdf_fields(
         csv_path (str): Path to the CSV input file.
         output_pdf_path (str): Path where the filled PDF should be saved.
         template_pdf_path (str): Path to the input (template) PDF file.
-        generator_script_path (str): Path where the generated fill script will be saved.
+        generator_script (str): Path where the generated fill script will be saved.
     """
     fill_data = {}
     try:
@@ -326,15 +353,15 @@ except Exception as e:
 """
 
     try:
-        with open(generator_script_path, "w", encoding="utf-8") as script_file:
+        with open(generator_script, "w", encoding="utf-8") as script_file:
             script_file.write(script_content)
-        print(f"Generated fill script saved to {generator_script_path}")
+        print(f"Generated fill script saved to {generator_script}")
     except Exception as e:
-        print(f"Error writing fill script to {generator_script_path}: {e}")
+        print(f"Error writing fill script to {generator_script}: {e}")
         return
     try:
         result = subprocess.run(
-            [sys.executable, generator_script_path],
+            [sys.executable, generator_script],
             capture_output=True,
             text=True,
         )
