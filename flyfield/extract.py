@@ -10,7 +10,7 @@ from typing import Dict, List
 
 import fitz  # PyMuPDF
 
-from .config import MAX_BOX_HEIGHT, MIN_BOX_HEIGHT, TARGET_COLOUR
+from .config import MAX_BOX_HEIGHT, MIN_BOX_HEIGHT, TARGET_COLOUR, USER_FILL_COLOR
 from .io_utils import write_csv
 from .layout import assign_numeric_blocks, calculate_layout_fields
 from .utils import allowed_text, colour_match, int_to_rgb
@@ -88,7 +88,6 @@ def filter_boxes(page: fitz.Page, boxes: List[Dict]) -> List[Dict]:
     """
     filtered = []
     page_height = page.rect.height
-    black = (0, 0, 0)  # RGB for black text matching
 
     for box in boxes:
         height = box.get("y1", 0) - box.get("y0", 0)
@@ -102,8 +101,8 @@ def filter_boxes(page: fitz.Page, boxes: List[Dict]) -> List[Dict]:
 
         text_dict = page.get_text("dict", clip=clip_rect)
 
-        black_text_parts = []
-        non_black_text_parts = []
+        user_fill_text_parts = []
+        non_user_fill_text_parts = []
 
         for block in text_dict.get("blocks", []):
             for line in block.get("lines", []):
@@ -121,12 +120,12 @@ def filter_boxes(page: fitz.Page, boxes: List[Dict]) -> List[Dict]:
                                 rgb = fitz.utils.getColor(span_color)
                             except Exception:
                                 rgb = None
-                    if rgb and colour_match(rgb, target_color=black):
-                        black_text_parts.append(span_text)
+                    if rgb and colour_match(rgb, USER_FILL_COLOR):
+                        user_fill_text_parts.append(span_text)
                     else:
-                        non_black_text_parts.append(span_text)
-        fill_text = "".join(black_text_parts)
-        box_text = "".join(non_black_text_parts)
+                        non_user_fill_text_parts.append(span_text)
+        fill_text = "".join(user_fill_text_parts)
+        box_text = "".join(non_user_fill_text_parts)
 
         allowed, detected_field_type = allowed_text(
             box_text, field_type=box.get("field_type")

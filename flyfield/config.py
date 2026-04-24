@@ -15,10 +15,17 @@ DEFAULT_FILL_SUFFIX = "-filled"
 
 COLOR_WHITE = (1, 1, 1)
 COLOR_BLACK = (0, 0, 0)
+COLOR_BLUE = (0, 0, 1)
+
 
 # Target color for extraction (normalized RGB)
 
-TARGET_COLOUR = (1, 1, 1)  # RGB normalized white for fill colour detection
+TARGET_COLOUR = COLOR_WHITE        # White for fill colour detection
+USER_FILL_COLOR = COLOR_BLACK      # User-entered text
+PREPRINT_COLOR_TOLERANCE = 0.01    # Non-exact match = pre-printed
+
+MARKUP_STROKE_COLOR = COLOR_BLUE   # Markup stroke
+MARKUP_TEXT_COLOR = COLOR_BLUE     # Markup text
 
 # Thresholds for layout grouping and gaps (arbitrary units, related to PDF coords)
 

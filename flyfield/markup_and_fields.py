@@ -12,7 +12,7 @@ from typing import Dict, List, Optional, Tuple
 import fitz  # PyMuPDF
 
 from . import config
-from .config import GAP, GAP_GROUP, F
+from .config import GAP, GAP_GROUP, F, MARKUP_STROKE_COLOR, MARKUP_TEXT_COLOR
 from .utils import conditional_merge_list, format_money_space, parse_money_space, FLYFIELD_KEYWORDS, update_metadata
 
 logger = logging.getLogger(__name__)
@@ -22,7 +22,6 @@ def markup_pdf(
     pdf_path: str,
     page_dict: Dict[int, List[Dict]],
     output_pdf_path: str,
-    mark_color: Tuple[float, float, float] = (0, 0, 1),
     mark_radius: float = 1,
 ) -> None:
     """
@@ -32,7 +31,6 @@ def markup_pdf(
         pdf_path (str): Input PDF file.
         page_dict (dict): Pages and boxes with layout info.
         output_pdf_path (str): Path where the filled PDF should be saved.
-        mark_color (tuple): RGB float tuple for marker color.
         mark_radius (int or float): Radius of circle marks.
 
     Returns:
@@ -63,10 +61,10 @@ def markup_pdf(
                     point,
                     str(box.get("code", "?")),
                     fontsize=8,
-                    color=mark_color,
+                    color=MARKUP_TEXT_COLOR,
                     morph=(point, fitz.Matrix(1, 0, 0, 1, 0, 0).prerotate(45)),
                 )
-        shape.finish(color=mark_color, fill=None)
+        shape.finish(color=MARKUP_STROKE_COLOR, fill=None)
         shape.commit()
     try:
         doc.save(output_pdf_path)
