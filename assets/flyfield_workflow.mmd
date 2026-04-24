@@ -1,0 +1,31 @@
+---
+config:
+  theme: default
+  look: handDrawn
+  layout: elk
+---
+flowchart TD
+    Start([Start CLI]) --> ParseArgs["Parse CLI Arguments"]
+    ParseArgs --> CheckPDF{"PDF file exists?"}
+    CheckPDF -- Yes --> LoadCSV{"--input-csv provided?"}
+    CheckPDF -- No --> Fatal1[Exit with error]
+
+    LoadCSV -- Yes --> LoadBoxes["load boxes from csv"]
+        LoadBoxes --> ActionChoice
+        LoadBoxes -. Fail .-> Fatal2[Exit with error]
+
+    LoadCSV -- No --> ProcessBoxes["process boxes"]
+
+    ProcessBoxes --> ActionChoice
+
+    ActionChoice{"Perform actions:"}
+    ActionChoice -->|--markup| DoMarkup["markup pdf → -markup.pdf"]
+    ActionChoice -->|--fields| DoFields["generate form fields script → run standalone script → -fields.pdf"]
+    ActionChoice -->|--fill FILE| DoFill["run fill pdf fields → -filled.pdf"]
+    ActionChoice -->|--capture| DoCapture["save pdf form data to csv → -capture.csv"]
+
+    DoMarkup --> Next[Continue with updated input pdf]
+    DoFields --> Next
+    DoFill --> Next
+    DoCapture --> Next
+    Next --> End([End])
